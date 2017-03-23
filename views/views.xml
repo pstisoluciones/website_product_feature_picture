@@ -1,0 +1,80 @@
+<openerp>
+    <data>
+
+        <template id="product_big">
+
+            <div t-if="product.image" class="item active">
+                <span  itemprop="image" t-field="product.image" t-field-options='{"widget": "image", "class": "img-responsive"}'/>
+             </div>
+
+
+            <t t-foreach="product.picture_ids" t-as="pic">
+                <div class="item">
+                    <span  itemprop="image" t-field="pic.picture" t-field-options='{"widget": "image", "class": "img-responsive"}'/>
+                </div>
+            </t>
+        </template>
+
+        <template id="product_thumb">
+            <div class="item active">
+
+                <div t-if="product.image" data-target="#carousel" data-slide-to="0" class="thumb">
+                    <img  itemprop="image" t-att-src="website.image_url(product, 'image', None)" class="img-responsive"/>
+                </div>
+
+
+                <t t-foreach="product.picture_ids" t-as="pic">
+                    <div  data-target="#carousel" t-att-data-slide-to="pic_index+1" class="thumb">
+                        <img itemprop="image" t-att-src="website.image_url(pic, 'picture', None)" class="img-responsive"/>
+                    </div>
+                </t>
+            </div>
+        </template>
+
+
+        <template id="product_logo">
+            <t t-foreach="product.logo_ids" t-as="pic">
+                <a href="#" data-toggle="popover" t-att-title="pic.legend">
+                    <img itemprop="image" t-att-src="website.image_url(pic, 'picture', None)" class="img-responsive"/>
+                </a>
+            </t>
+        </template>
+
+
+
+
+     <template id="product" inherit_id="website_sale.product" active="False" customize_show="True" name="Thumbs">
+         <xpath expr="//div[@class='row']/div[@class='col-sm-7']" position="replace">
+
+            <div class="col-sm-6">
+
+                <div id="carousel" class="carousel slide" data-ride="carousel">
+                    <div id="list-big" class="carousel-inner">
+                        <t t-call="website_product_feature_picture.product_big"/>
+                    </div>
+
+                </div>
+
+                <div class="clearfix">
+                    <div id="thumbcarousel" class="carousel slide" data-interval="false">
+                        <div id="list-thumb" class="carousel-inner">
+                            <t t-call="website_product_feature_picture.product_thumb"/>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+             <div class="col-sm-1 col-md-1 col-lg-1" style="padding-left: 0px; padding-right: 0px;">
+                <div id="list-logo" class="container">
+                    <t t-call="website_product_feature_picture.product_logo"/>
+                </div>
+             </div>
+         </xpath>
+     </template>
+
+    </data>
+</openerp>
+
+
+
